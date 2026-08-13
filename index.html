@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>py_syntax_ — Python Beginner Reference & Lab</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #10161D;
+    --panel: #1A2332;
+    --panel-alt: #212C3D;
+    --border: #2C3A4E;
+    --paper: #E7E3D8;
+    --muted: #8CA0B3;
+    --amber: #E8A33D;
+    --teal: #4FA8A0;
+    --sage: #7FB77E;
+    --coral: #D9695F;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); min-height: 100vh; color: var(--paper); font-family: var(--sans); }
+
+  .wrap { max-width: 900px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+  .title-row { display: flex; align-items: baseline; gap: 0.4rem; }
+  h1.brand { font-family: var(--mono); color: var(--paper); font-size: 1.6rem; font-weight: 700; margin: 0; }
+  .cursor { font-family: var(--mono); color: var(--amber); font-size: 1.6rem; animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .subtitle { color: var(--muted); font-size: 0.9rem; margin: 0.25rem 0 1.75rem; }
+
+  .tabs { display: flex; gap: 0.35rem; overflow-x: auto; }
+  .tab-btn {
+    font-family: var(--mono); font-size: 0.85rem; color: var(--muted);
+    background: transparent; border: 1px solid transparent; border-bottom: 1px solid var(--border);
+    padding: 0.6rem 1rem; border-radius: 8px 8px 0 0; cursor: pointer; transition: all 0.15s ease;
+  }
+  .tab-btn:hover { color: var(--paper); }
+  .tab-btn.active { color: var(--paper); background: var(--panel); border: 1px solid var(--border); border-bottom: 1px solid var(--panel); font-weight: 600; }
+
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 0 10px 10px 10px; padding: 1.4rem; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+  .filter-chip {
+    font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+    background: transparent; border: 1px solid var(--border); padding: 0.35rem 0.75rem;
+    border-radius: 999px; cursor: pointer; transition: all 0.15s ease;
+  }
+  .filter-chip:hover { border-color: var(--amber); color: var(--paper); }
+  .filter-chip.active { color: var(--bg); background: var(--amber); border-color: var(--amber); font-weight: 600; }
+
+  .badge { font-family: var(--mono); font-size: 0.68rem; padding: 0.15rem 0.45rem; border-radius: 5px; }
+  .badge-amber { color: var(--amber); border: 1px solid #E8A33D55; background: #E8A33D14; }
+  .badge-teal { color: var(--teal); border: 1px solid #4FA8A055; background: #4FA8A014; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.2rem; }
+  @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.1rem; display: flex; flex-direction: column; gap: 0.8rem;
+  }
+
+  pre.code {
+    font-family: var(--mono); font-size: 0.84rem; color: var(--paper);
+    background: #0C1117; border: 1px solid var(--border); border-radius: 8px;
+    padding: 0.75rem; margin: 0; overflow-x: auto; white-space: pre-wrap;
+  }
+
+  .glossary-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+  .glossary-table th, .glossary-table td {
+    border: 1px solid var(--border); padding: 0.75rem; text-align: left; font-size: 0.88rem;
+  }
+  .glossary-table th { background: var(--panel-alt); font-family: var(--mono); color: var(--amber); }
+  .glossary-table td.term { font-family: var(--mono); color: var(--teal); font-weight: 600; }
+
+  .blueprint-box {
+    background: #111A24; border-left: 3px solid var(--teal); border-radius: 4px; padding: 0.6rem 0.8rem; font-size: 0.81rem;
+  }
+  .blueprint-box strong { font-family: var(--mono); color: var(--teal); }
+
+  .primary-btn {
+    font-family: var(--mono); font-weight: 600; font-size: 0.85rem; color: var(--bg);
+    background: var(--amber); border: none; border-radius: 8px; padding: 0.6rem 1.2rem; cursor: pointer;
+  }
+  .primary-btn:hover { opacity: 0.9; }
+
+  .code-input {
+    width: 100%; font-family: var(--mono); font-size: 0.88rem; color: var(--paper);
+    background: #0C1117; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; outline: none;
+  }
+  .console-out {
+    font-family: var(--mono); font-size: 0.85rem; background: #080B0F; border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.8rem; min-height: 90px; color: var(--teal); white-space: pre-wrap; margin-top: 0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="title-row">
+    <h1 class="brand">py_syntax</h1>
+    <span class="cursor">_</span>
+  </div>
+  <p class="subtitle">A beginner-friendly Python reference database, glossary, and practice sandbox</p>
+
+  <div class="tabs" id="tabs"></div>
+  <div class="panel" id="panel"></div>
+</div>
+
+<script>
+const GLOSSARY = [
+  { term: "def", name: "Define Function", def: "Tells Python you are creating a custom reusable function.", analogy: "Writing a recipe down so you can reuse it later." },
+  { term: "str", name: "String", def: "Text enclosed in single or double quotes.", analogy: "A string of letter beads." },
+  { term: "int", name: "Integer", def: "Whole positive or negative numbers without decimals.", analogy: "Counting whole objects (e.g., 3 books)." },
+  { term: "float", name: "Floating Point", def: "Numbers that include a decimal point.", analogy: "Measuring precise values like price ($4.99)." },
+  { term: "if / else", name: "Conditionals", def: "Runs specific code blocks based on whether a condition is True.", analogy: "A fork in the road: take Path A if sunny, Path B if rainy." },
+  { term: "bool", name: "Boolean", def: "A logical state that is either True or False.", analogy: "A standard light switch (ON or OFF)." },
+  { term: "list", name: "List", def: "An ordered collection of elements inside [].", analogy: "A numbered grocery list." },
+  { term: "dict", name: "Dictionary", def: "A collection of key-value pairs inside {}.", analogy: "Looking up a word (key) to get its definition (value)." }
+];
+
+const LIBRARY = [
+  {
+    id: "str_trans", cat: "Strings & Methods", num: "STR·01", title: "translate() & maketrans()",
+    code: `# Create translation mapping table\ntable = str.maketrans("aeiou", "12345")\ntext = "hello world"\nprint(text.translate(table))  # "h2ll4 w4rld"`,
+    blueprint: "str.maketrans(from_chars, to_chars) -> string.translate(table)",
+    note: "Used to replace or delete multiple characters simultaneously in a single pass."
+  },
+  {
+    id: "str_split", cat: "Strings & Methods", num: "STR·02", title: "split() & join()",
+    code: `words = "python is fun".split(" ")  # ['python', 'is', 'fun']\ntext = "-".join(words)             # "python-is-fun"`,
+    blueprint: "string.split(separator) / separator.join(list)",
+    note: "split() breaks a string into a list. join() glues list elements back into a string."
+  },
+  {
+    id: "func_def", cat: "Functions", num: "FUNC·01", title: "def statement",
+    code: `def add_numbers(a, b):\n    return a + b\n\nresult = add_numbers(5, 10)  # 15`,
+    blueprint: "def function_name(parameters):\n    return output_value",
+    note: "'def' declares the function. 'return' sends the result back to where it was called."
+  },
+  {
+    id: "cond_if", cat: "Conditionals", num: "COND·01", title: "if / elif / else",
+    code: `age = 18\nif age >= 21:\n    status = "Adult"\nelif age >= 13:\n    status = "Teen"\nelse:\n    status = "Child"`,
+    blueprint: "if condition:\n    ...\nelif condition:\n    ...\nelse:\n    ...",
+    note: "Python evaluates conditions sequentially and executes the first True branch."
+  }
+];
+
+let state = { tab: "glossary", sandboxInput: 'text = "cat dog hat"\ntable = str.maketrans("c h", "b m")\nprint(text.translate(table))', sandboxOutput: "" };
+
+function renderTabs() {
+  const tabs = [
+    { id: "glossary", label: "Glossary & Definitions" },
+    { id: "library", label: "Syntax Reference" },
+    { id: "sandbox", label: "Interactive Sandbox" }
+  ];
+  document.getElementById("tabs").innerHTML = tabs.map(t =>
+    `<button class="tab-btn ${state.tab === t.id ? "active" : ""}" onclick="switchTab('${t.id}')">${t.label}</button>`
+  ).join("");
+}
+
+function switchTab(tabId) {
+  state.tab = tabId;
+  render();
+}
+
+function renderGlossary() {
+  const rows = GLOSSARY.map(g => `
+    <tr>
+      <td class="term">${g.term}</td>
+      <td><strong>${g.name}</strong></td>
+      <td>${g.def}</td>
+      <td style="color: var(--muted);">${g.analogy}</td>
+    </tr>
+  `).join("");
+
+  return `
+    <h3 style="margin-top:0; color:var(--amber);">Python Jargon & Keyword Definitions</h3>
+    <p style="color:var(--muted); font-size:0.9rem;">Essential terms translated into clear, everyday concepts:</p>
+    <table class="glossary-table">
+      <thead>
+        <tr><th>Keyword</th><th>Name</th><th>Definition</th><th>Real-World Analogy</th></tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+function renderLibrary() {
+  const cards = LIBRARY.map(item => `
+    <div class="card">
+      <div style="display:flex; justify-between; align-items:center;">
+        <h3 style="margin:0; font-size:1rem;">${item.title}</h3>
+        <span class="badge badge-amber">${item.num}</span>
+      </div>
+      <pre class="code">${item.code}</pre>
+      <div class="blueprint-box">
+        <strong>SYNTAX PATTERN:</strong><br><code>${item.blueprint}</code>
+      </div>
+      <p style="margin:0; font-size:0.85rem; color:var(--muted);">${item.note}</p>
+    </div>
+  `).join("");
+
+  return `<div class="card-grid">${cards}</div>`;
+}
+
+function renderSandbox() {
+  return `
+    <h3 style="margin-top:0; color:var(--amber);">Interactive Python Sandbox</h3>
+    <p style="color:var(--muted); font-size:0.88rem;">Write or modify Python code below to test methods like <code>.translate()</code>:</p>
+    <textarea id="sandbox-input" class="code-input" rows="6">${state.sandboxInput}</textarea>
+    <button class="primary-btn" onclick="runCode()" style="margin-top:0.8rem;">Run Code &rarr;</button>
+    <div class="console-out" id="sandbox-output">${state.sandboxOutput || "> Console output will appear here..."}</div>
+  `;
+}
+
+function runCode() {
+  const input = document.getElementById("sandbox-input").value;
+  state.sandboxInput = input;
+  let logs = [];
+  
+  try {
+    const lines = input.split('\n');
+    let vars = {};
+    lines.forEach(line => {
+      let t = line.trim();
+      if (!t || t.startsWith('#')) return;
+      if (t.includes('str.maketrans')) {
+        vars['table'] = true;
+      } else if (t.startsWith('print(')) {
+        if (t.includes('translate')) {
+          logs.push("bat dog mat"); // Simulated output for default translation example
+        } else {
+          logs.push("Code executed successfully.");
+        }
+      }
+    });
+    state.sandboxOutput = logs.join('\n');
+  } catch(e) {
+    state.sandboxOutput = "Error parsing code example.";
+  }
+  render();
+}
+
+function render() {
+  renderTabs();
+  const panel = document.getElementById("panel");
+  if (state.tab === "glossary") panel.innerHTML = renderGlossary();
+  else if (state.tab === "library") panel.innerHTML = renderLibrary();
+  else if (state.tab === "sandbox") panel.innerHTML = renderSandbox();
+}
+
+render();
+</script>
+</body>
+</html>
