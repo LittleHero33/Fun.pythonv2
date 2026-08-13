@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>py_syntax_ — Python Beginner Reference & Lab</title>
+<title>py_syntax_ — Comprehensive Python Reference & Practice Lab</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
@@ -18,84 +18,476 @@
     --teal: #4FA8A0;
     --sage: #7FB77E;
     --coral: #D9695F;
-    --mono: 'IBM Plex Mono', monospace;
-    --sans: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', 'Courier New', monospace;
+    --sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
   }
 
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); min-height: 100vh; color: var(--paper); font-family: var(--sans); }
 
-  .wrap { max-width: 900px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-  .title-row { display: flex; align-items: baseline; gap: 0.4rem; }
-  h1.brand { font-family: var(--mono); color: var(--paper); font-size: 1.6rem; font-weight: 700; margin: 0; }
-  .cursor { font-family: var(--mono); color: var(--amber); font-size: 1.6rem; animation: blink 1.1s steps(1) infinite; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    min-height: 100vh;
+    color: var(--paper);
+    font-family: var(--sans);
+  }
+
+  .wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
+  h1.brand {
+    font-family: var(--mono);
+    color: var(--paper);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .cursor {
+    font-family: var(--mono);
+    color: var(--amber);
+    font-size: 1.6rem;
+    animation: blink 1.1s steps(1) infinite;
+  }
   @keyframes blink { 50% { opacity: 0; } }
 
-  .subtitle { color: var(--muted); font-size: 0.9rem; margin: 0.25rem 0 1.75rem; }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin: 0.25rem 0 1.75rem;
+  }
 
-  .tabs { display: flex; gap: 0.35rem; overflow-x: auto; }
+  .tabs {
+    display: flex;
+    gap: 0.35rem;
+    overflow-x: auto;
+  }
+
   .tab-btn {
-    font-family: var(--mono); font-size: 0.85rem; color: var(--muted);
-    background: transparent; border: 1px solid transparent; border-bottom: 1px solid var(--border);
-    padding: 0.6rem 1rem; border-radius: 8px 8px 0 0; cursor: pointer; transition: all 0.15s ease;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: 1px solid var(--border);
+    padding: 0.65rem 1.1rem;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    position: relative;
+    top: 1px;
+    white-space: nowrap;
+    transition: all 0.15s ease;
   }
+
   .tab-btn:hover { color: var(--paper); }
-  .tab-btn.active { color: var(--paper); background: var(--panel); border: 1px solid var(--border); border-bottom: 1px solid var(--panel); font-weight: 600; }
 
-  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 0 10px 10px 10px; padding: 1.4rem; }
-
-  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
-  .filter-chip {
-    font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
-    background: transparent; border: 1px solid var(--border); padding: 0.35rem 0.75rem;
-    border-radius: 999px; cursor: pointer; transition: all 0.15s ease;
+  .tab-btn.active {
+    color: var(--paper);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-bottom: 1px solid var(--panel);
+    font-weight: 600;
   }
-  .filter-chip:hover { border-color: var(--amber); color: var(--paper); }
-  .filter-chip.active { color: var(--bg); background: var(--amber); border-color: var(--amber); font-weight: 600; }
 
-  .badge { font-family: var(--mono); font-size: 0.68rem; padding: 0.15rem 0.45rem; border-radius: 5px; }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 0 10px 10px 10px;
+    padding: 1.5rem;
+  }
+
+  /* Utility controls & chips */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .filter-chip {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .filter-chip:hover { border-color: var(--amber); color: var(--paper); }
+
+  .filter-chip.active {
+    color: var(--bg);
+    background: var(--amber);
+    border-color: var(--amber);
+    font-weight: 600;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
   .badge-amber { color: var(--amber); border: 1px solid #E8A33D55; background: #E8A33D14; }
   .badge-teal { color: var(--teal); border: 1px solid #4FA8A055; background: #4FA8A014; }
+  .badge-sage { color: var(--sage); border: 1px solid #7FB77E55; background: #7FB77E14; }
+  .badge-coral { color: var(--coral); border: 1px solid #D9695F55; background: #D9695F14; }
 
-  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.2rem; }
-  @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } }
+  /* Glossary Table */
+  .glossary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.8rem;
+  }
+
+  .glossary-table th, .glossary-table td {
+    border: 1px solid var(--border);
+    padding: 0.75rem 0.9rem;
+    text-align: left;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .glossary-table th {
+    background: var(--panel-alt);
+    font-family: var(--mono);
+    color: var(--amber);
+    font-weight: 600;
+  }
+
+  .glossary-table td.term {
+    font-family: var(--mono);
+    color: var(--teal);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Cards & Grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 600px) {
+    .card-grid { grid-template-columns: 1fr; }
+  }
 
   .card {
-    background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px;
-    padding: 1.1rem; display: flex; flex-direction: column; gap: 0.8rem;
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .card-head h3 {
+    color: var(--paper);
+    font-weight: 600;
+    font-size: 0.98rem;
+    margin: 0;
   }
 
   pre.code {
-    font-family: var(--mono); font-size: 0.84rem; color: var(--paper);
-    background: #0C1117; border: 1px solid var(--border); border-radius: 8px;
-    padding: 0.75rem; margin: 0; overflow-x: auto; white-space: pre-wrap;
+    font-family: var(--mono);
+    font-size: 0.84rem;
+    color: var(--paper);
+    background: #0C1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.8rem 0.9rem;
+    margin: 0;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    line-height: 1.5;
   }
-
-  .glossary-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
-  .glossary-table th, .glossary-table td {
-    border: 1px solid var(--border); padding: 0.75rem; text-align: left; font-size: 0.88rem;
-  }
-  .glossary-table th { background: var(--panel-alt); font-family: var(--mono); color: var(--amber); }
-  .glossary-table td.term { font-family: var(--mono); color: var(--teal); font-weight: 600; }
 
   .blueprint-box {
-    background: #111A24; border-left: 3px solid var(--teal); border-radius: 4px; padding: 0.6rem 0.8rem; font-size: 0.81rem;
+    background: #111A24;
+    border-left: 3px solid var(--teal);
+    border-radius: 4px 8px 8px 4px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.81rem;
+    line-height: 1.45;
   }
   .blueprint-box strong { font-family: var(--mono); color: var(--teal); }
 
-  .primary-btn {
-    font-family: var(--mono); font-weight: 600; font-size: 0.85rem; color: var(--bg);
-    background: var(--amber); border: none; border-radius: 8px; padding: 0.6rem 1.2rem; cursor: pointer;
+  .pitfall-box {
+    background: #1C1518;
+    border-left: 3px solid var(--coral);
+    border-radius: 4px 8px 8px 4px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.81rem;
+    color: #E2B4B0;
+    line-height: 1.45;
   }
-  .primary-btn:hover { opacity: 0.9; }
+  .pitfall-box strong { font-family: var(--mono); color: var(--coral); }
 
-  .code-input {
-    width: 100%; font-family: var(--mono); font-size: 0.88rem; color: var(--paper);
-    background: #0C1117; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; outline: none;
+  .action-btn {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--amber);
+    background: transparent;
+    border: 1px solid var(--amber);
+    border-radius: 6px;
+    padding: 0.4rem 0.75rem;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: all 0.15s ease;
   }
+  .action-btn:hover { background: var(--amber); color: var(--bg); }
+
+  /* Core 5 Block */
+  .block {
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .block-head { display: flex; gap: 1rem; align-items: flex-start; }
+
+  .block-num {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    background: var(--amber);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .block-head h3 {
+    color: var(--paper);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin: 0 0 0.35rem;
+  }
+
+  .block-head p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .why {
+    color: var(--teal);
+    font-size: 0.86rem;
+    background: #4FA8A014;
+    border: 1px solid #4FA8A033;
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+  }
+  .why strong { font-family: var(--mono); margin-right: 0.4rem; }
+
+  /* Quiz UI */
+  .quiz-config {
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .config-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .config-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    min-width: 90px;
+  }
+
+  .quiz-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .quiz-meta .score { color: var(--amber); font-weight: 600; }
+
+  .quiz-card {
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.3rem;
+  }
+
+  .quiz-question {
+    color: var(--paper);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 0 0 1.2rem;
+  }
+
+  .option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    color: var(--paper);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.6rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .option:hover:not([disabled]) {
+    border-color: var(--amber);
+    background: #212F43;
+  }
+
+  .option.correct { color: var(--sage); background: #7FB77E22; border-color: var(--sage); }
+  .option.wrong { color: var(--coral); background: #D9695F22; border-color: var(--coral); }
+  .option[disabled] { cursor: default; }
+
+  .explanation {
+    color: var(--paper);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    background: #0C1117;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    margin-top: 1.1rem;
+  }
+
+  .next-btn, .restart-btn, .primary-btn {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--bg);
+    background: var(--amber);
+    border: none;
+    border-radius: 8px;
+    padding: 0.65rem 1.25rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+  .next-btn:hover, .restart-btn:hover, .primary-btn:hover { opacity: 0.9; }
+
+  .result { text-align: center; padding: 2.2rem 1rem; }
+  .result .label { font-family: var(--mono); color: var(--amber); font-size: 0.8rem; letter-spacing: 0.1em; }
+  .result .score-big { color: var(--paper); font-size: 2.4rem; font-weight: 700; margin: 0.5rem 0; }
+  .result .msg { color: var(--muted); font-size: 0.95rem; max-width: 440px; margin: 0 auto 1.5rem; }
+
+  /* Practice Tab */
+  .lab-layout { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .drill-card {
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .drill-header { display: flex; justify-content: space-between; align-items: center; }
+  .drill-header h3 { margin: 0; font-size: 1.05rem; }
+
+  .input-area { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  textarea.code-input, input.code-input {
+    width: 100%;
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--paper);
+    background: #0C1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 0.9rem;
+    outline: none;
+  }
+
+  textarea.code-input:focus, input.code-input:focus { border-color: var(--amber); }
+
+  .feedback {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    display: none;
+  }
+  .feedback.success { display: block; background: #7FB77E22; color: var(--sage); border: 1px solid var(--sage); }
+  .feedback.error { display: block; background: #D9695F22; color: var(--coral); border: 1px solid var(--coral); }
+
+  .sandbox-card {
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+
   .console-out {
-    font-family: var(--mono); font-size: 0.85rem; background: #080B0F; border: 1px solid var(--border);
-    border-radius: 8px; padding: 0.8rem; min-height: 90px; color: var(--teal); white-space: pre-wrap; margin-top: 0.8rem;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    background: #080B0F;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.8rem;
+    min-height: 100px;
+    max-height: 220px;
+    overflow-y: auto;
+    color: var(--teal);
+    white-space: pre-wrap;
+    margin-top: 0.8rem;
   }
 </style>
 </head>
@@ -106,69 +498,218 @@
     <h1 class="brand">py_syntax</h1>
     <span class="cursor">_</span>
   </div>
-  <p class="subtitle">A beginner-friendly Python reference database, glossary, and practice sandbox</p>
+  <p class="subtitle">A beginner-friendly database, interactive glossary, syntax blueprints, and practice lab</p>
 
   <div class="tabs" id="tabs"></div>
   <div class="panel" id="panel"></div>
 </div>
 
 <script>
+// Plain-English Beginners Glossary
 const GLOSSARY = [
-  { term: "def", name: "Define Function", def: "Tells Python you are creating a custom reusable function.", analogy: "Writing a recipe down so you can reuse it later." },
-  { term: "str", name: "String", def: "Text enclosed in single or double quotes.", analogy: "A string of letter beads." },
-  { term: "int", name: "Integer", def: "Whole positive or negative numbers without decimals.", analogy: "Counting whole objects (e.g., 3 books)." },
-  { term: "float", name: "Floating Point", def: "Numbers that include a decimal point.", analogy: "Measuring precise values like price ($4.99)." },
-  { term: "if / else", name: "Conditionals", def: "Runs specific code blocks based on whether a condition is True.", analogy: "A fork in the road: take Path A if sunny, Path B if rainy." },
-  { term: "bool", name: "Boolean", def: "A logical state that is either True or False.", analogy: "A standard light switch (ON or OFF)." },
-  { term: "list", name: "List", def: "An ordered collection of elements inside [].", analogy: "A numbered grocery list." },
-  { term: "dict", name: "Dictionary", def: "A collection of key-value pairs inside {}.", analogy: "Looking up a word (key) to get its definition (value)." }
+  { term: "def", name: "Define Function", def: "Declares a new reusable block of code under a specific name.", analogy: "Writing a recipe down so you can cook it anytime without re-learning the steps." },
+  { term: "str", name: "String", def: "A sequence of text characters wrapped inside quotes ('hello' or \"world\").", analogy: "A string of letter beads." },
+  { term: "int", name: "Integer", def: "A whole number with no decimal points (e.g., 42, -7, 0).", analogy: "Counting whole items, like apples or people." },
+  { term: "float", name: "Floating-Point", def: "A number that includes a decimal point (e.g., 3.14159, 0.5).", analogy: "Measuring exact quantities like money ($4.99) or temperature." },
+  { term: "if / elif / else", name: "Conditionals", def: "Branching logic that decides which code runs depending on whether statements are True or False.", analogy: "A fork in the road: 'If sunny, wear sunglasses; else, take an umbrella.'" },
+  { term: "bool", name: "Boolean", def: "A data value that can only be True or False.", analogy: "A light switch (ON or OFF)." },
+  { term: "list", name: "List", def: "An ordered, changeable collection of items inside square brackets [].", analogy: "A numbered grocery list." },
+  { term: "dict", name: "Dictionary", def: "A mapping structure storing items as key-value pairs inside {}.", analogy: "A real dictionary: look up a word (key) to get its definition (value)." },
+  { term: "tuple", name: "Tuple", def: "An ordered collection inside () that CANNOT be changed once created.", analogy: "A sealed envelope containing fixed GPS coordinates." },
+  { term: "set", name: "Set", def: "An unordered collection of UNIQUE elements inside {} that automatically discards duplicates.", analogy: "A box of unique collector cards." },
+  { term: "None", name: "NoneType", def: "A special constant representing the complete absence of a value.", analogy: "An empty seat reserved at a restaurant table." },
+  { term: "lambda", name: "Anonymous Function", def: "A compact, single-line function defined without 'def'.", analogy: "A quick sticky note instruction used once and thrown away." }
 ];
 
+// Complete Reference Library
 const LIBRARY = [
   {
     id: "str_trans", cat: "Strings & Methods", num: "STR·01", title: "translate() & maketrans()",
-    code: `# Create translation mapping table\ntable = str.maketrans("aeiou", "12345")\ntext = "hello world"\nprint(text.translate(table))  # "h2ll4 w4rld"`,
-    blueprint: "str.maketrans(from_chars, to_chars) -> string.translate(table)",
-    note: "Used to replace or delete multiple characters simultaneously in a single pass."
+    code: `# 1. Create a character translation mapping table\ntable = str.maketrans("aeiou", "12345")\n\n# 2. Apply table to string\ntext = "hello world"\nclean = text.translate(table)\nprint(clean)  # "h2ll4 w4rld"`,
+    blueprint: "table = str.maketrans(from_chars, to_chars)\nnew_text = string.translate(table)",
+    pitfall: "from_chars and to_chars MUST have the exact same character length, or Python throws a ValueError.",
+    note: "Replaces or removes multiple characters simultaneously in a single high-speed pass."
   },
   {
-    id: "str_split", cat: "Strings & Methods", num: "STR·02", title: "split() & join()",
-    code: `words = "python is fun".split(" ")  # ['python', 'is', 'fun']\ntext = "-".join(words)             # "python-is-fun"`,
-    blueprint: "string.split(separator) / separator.join(list)",
-    note: "split() breaks a string into a list. join() glues list elements back into a string."
+    id: "str_del", cat: "Strings & Methods", num: "STR·02", title: "Deleting characters with translate()",
+    code: `import string\n\ntext = "Hello, World! How's it going?"\n# Third parameter deletes specified characters\nremove_punct = str.maketrans("", "", string.punctuation)\nprint(text.translate(remove_punct))\n# Output: "Hello World Hows it going"`,
+    blueprint: "str.maketrans(\"\", \"\", chars_to_delete)",
+    pitfall: "Forgetting to pass empty strings as the first two arguments will result in incorrect argument positioning.",
+    note: "The 3rd argument of maketrans() specifies characters to completely strip out of the string."
   },
   {
-    id: "func_def", cat: "Functions", num: "FUNC·01", title: "def statement",
-    code: `def add_numbers(a, b):\n    return a + b\n\nresult = add_numbers(5, 10)  # 15`,
-    blueprint: "def function_name(parameters):\n    return output_value",
-    note: "'def' declares the function. 'return' sends the result back to where it was called."
+    id: "str_split", cat: "Strings & Methods", num: "STR·03", title: "split() and join()",
+    code: `words = "python,is,awesome".split(",") # ['python', 'is', 'awesome']\ntext = " ".join(words)               # "python is awesome"`,
+    blueprint: "list_var = string.split(delimiter)\nstring_var = delimiter.join(list_var)",
+    pitfall: "join() requires a list containing ONLY strings. If integers are inside, use a list comprehension first.",
+    note: "split() breaks text into a list; join() glues list items back into a single string."
   },
   {
-    id: "cond_if", cat: "Conditionals", num: "COND·01", title: "if / elif / else",
-    code: `age = 18\nif age >= 21:\n    status = "Adult"\nelif age >= 13:\n    status = "Teen"\nelse:\n    status = "Child"`,
-    blueprint: "if condition:\n    ...\nelif condition:\n    ...\nelse:\n    ...",
-    note: "Python evaluates conditions sequentially and executes the first True branch."
+    id: "str_slice", cat: "Strings & Methods", num: "STR·04", title: "String Slicing [start:stop:step]",
+    code: `text = "PythonCode"\nprint(text[0:6])   # "Python"\nprint(text[::-1])  # "edoCnohtyP" (Reverse string)`,
+    blueprint: "string[start_idx : stop_idx : step]",
+    pitfall: "The stop index is EXCLUSIVE. text[0:3] grabs index 0, 1, and 2, but leaves out 3.",
+    note: "Extracts sections of text. Negative steps reverse direction."
+  },
+  {
+    id: "v1", cat: "Variables", num: "VAR·01", title: "Variable Assignment",
+    code: `age = 25\nname = "Alice"`,
+    blueprint: "variable_name = value",
+    pitfall: "Do not put quotes around variable names. Avoid starting variables with digits (1st_num is invalid).",
+    note: "Binds a value to an identifier name. No explicit type declaration required."
+  },
+  {
+    id: "v2", cat: "Variables", num: "VAR·02", title: "Multiple Assignment & Unpacking",
+    code: `x, y, z = 1, 2, 3\n# Swapping variables instantly:\nx, y = y, x`,
+    blueprint: "var1, var2 = val1, val2",
+    pitfall: "The count of variables on the left side must match the count of values on the right.",
+    note: "Assigns multiple variables in a single line or swaps values without needing a temp variable."
+  },
+  {
+    id: "c1", cat: "Conditionals", num: "COND·01", title: "if / elif / else Statements",
+    code: `score = 85\nif score >= 90:\n    grade = "A"\nelif score >= 80:\n    grade = "B"\nelse:\n    grade = "C"`,
+    blueprint: "if condition:\n    indent()\nelif condition:\n    indent()\nelse:\n    indent()",
+    pitfall: "Forgetting trailing colons (:) or mixing tabs and spaces causes SyntaxError or IndentationError.",
+    note: "Evaluates top-to-bottom and executes ONLY the first branch that tests True."
+  },
+  {
+    id: "l1", cat: "Loops", num: "LOOP·01", title: "for loop with range()",
+    code: `for i in range(5):\n    print(i)  # Prints 0, 1, 2, 3, 4`,
+    blueprint: "for item in range(start, stop, step):",
+    pitfall: "range(5) generates 5 numbers, but stops at 4 (it is 0-indexed).",
+    note: "Repeats execution a specific number of times over a sequence."
+  },
+  {
+    id: "f1", cat: "Functions", num: "FUNC·01", title: "def statement & return",
+    code: `def multiply(a, b):\n    return a * b\n\nresult = multiply(4, 5)`,
+    blueprint: "def function_name(param1, param2):\n    return output_value",
+    pitfall: "Code written directly underneath a 'return' statement inside a function will never execute.",
+    note: "def creates a function; 'return' sends the output value back to the caller."
+  },
+  {
+    id: "li1", cat: "Data Structures", num: "DS·01", title: "Lists & Common Operations",
+    code: `items = ["apple", "banana"]\nitems.append("cherry")    # Add item\nfirst = items[0]          # Access first\nitems.pop(0)              # Remove by index`,
+    blueprint: "list_var = [elem1, elem2]\nlist_var.append(new_elem)",
+    pitfall: "Attempting to access an index that doesn't exist (e.g. items[99]) raises an IndexError.",
+    note: "Lists are ordered, mutable sequences initialized with square brackets."
+  },
+  {
+    id: "dc1", cat: "Data Structures", num: "DS·02", title: "Dictionaries (Key-Value)",
+    code: `user = {"name": "Sam", "role": "admin"}\nuser["age"] = 30         # Insert new key\nrole = user.get("role")  # Safe lookup`,
+    blueprint: "dict_var = {key_1: val_1, key_2: val_2}\ndict_var[key] = val",
+    pitfall: "Accessing dict['missing_key'] directly causes a KeyError. Use dict.get('key') for safe fallbacks.",
+    note: "Stores associative key-value data with fast direct lookup."
+  },
+  {
+    id: "oop1", cat: "Object-Oriented", num: "OOP·01", title: "Classes & Constructors",
+    code: `class Dog:\n    def __init__(self, name):\n        self.name = name  # Instance attribute\n\n    def bark(self):\n        return f"{self.name} says Woof!"\n\nmy_dog = Dog("Rex")\nprint(my_dog.bark())`,
+    blueprint: "class ClassName:\n    def __init__(self, param):\n        self.param = param",
+    pitfall: "Forgetting 'self' as the first parameter in method definitions makes them uncallable by instances.",
+    note: "Classes serve as blueprints for creating custom object instances."
   }
 ];
 
-let state = { tab: "glossary", sandboxInput: 'text = "cat dog hat"\ntable = str.maketrans("c h", "b m")\nprint(text.translate(table))', sandboxOutput: "" };
+const CATEGORIES = ["All", ...new Set(LIBRARY.map(i => i.cat))];
 
+const CORE_FIVE = [
+  { n: "1", title: "Variables & Data Types", desc: "Every program starts by holding on to values — names, numbers, on/off states. A variable is the label; the data type is what kind of thing it's labeling.",
+    code: `name = "Seth"     # str\nage = 21          # int\nheight = 5.9      # float\nis_touring = True # bool`,
+    why: "Nothing else in a program works until something exists to work on." },
+  { n: "2", title: "Conditionals", desc: "if / elif / else let a program make a decision — run this branch, or that one, based on what's currently true.",
+    code: `if ticket_count > 0:\n    print("Show's on")\nelse:\n    print("Cancelled")`,
+    why: "Decisions are what separate a script from a straight line of instructions." },
+  { n: "3", title: "Loops", desc: "for and while repeat a block of code so you don't write the same line 50 times.",
+    code: `for song in setlist:\n    play(song)`,
+    why: "Anywhere you'd say 'do this for each one' or 'keep doing this until,' you need a loop." },
+  { n: "4", title: "Functions", desc: "def packages up a block of logic under a name, so you can reuse it instead of retyping it.",
+    code: `def play(song):\n    print(f"Now playing {song}")`,
+    why: "Functions turn 'code that does a thing' into 'a thing you can call by name.'" },
+  { n: "5", title: "Data Structures", desc: "Lists hold ordered items; dictionaries hold labeled ones. Together they're how you organize more than one piece of data at a time.",
+    code: `setlist = ["Intro", "Close to You"]\nband = {"name": "Songs of Lorelei"}`,
+    why: "Real data rarely comes as a single value — it comes as a group, and these are how you hold the group." },
+];
+
+const QUESTION_POOL = [
+  { id: 1, cat: "Strings & Methods", level: "Intermediate", q: "What is the primary function of str.maketrans() when used with .translate()?", options: ["It converts strings into integers", "It creates a translation table mapping characters to replacement characters", "It translates text between foreign human languages", "It reverses string characters"], answer: 1, exp: "str.maketrans() creates a 1-to-1 character translation dictionary (a mapping table) used by string.translate()." },
+  { id: 2, cat: "Variables", level: "Beginner", q: "Which of the following is a valid Python variable name?", options: ["2nd_user", "user-name", "user_name", "class"], answer: 2, exp: "Variable names can contain letters, numbers, and underscores, but cannot start with a digit or use reserved keywords like 'class'." },
+  { id: 3, cat: "Strings & Methods", level: "Beginner", q: "What does 'python'[::-1] return?", options: ["'python'", "'p'", "'nohtyp'", "SyntaxError"], answer: 2, exp: "Slicing with a step of -1 ([::-1]) reverses the entire string." },
+  { id: 4, cat: "Functions", level: "Beginner", q: "Which keyword is used to declare a function in Python?", options: ["function", "func", "def", "define"], answer: 2, exp: "Functions are declared using the 'def' keyword." },
+  { id: 5, cat: "Conditionals", level: "Beginner", q: "Which operator checks if two values are equal?", options: ["=", "==", "equals", "==="], answer: 1, exp: "Double equals '==' compares values. Single '=' assigns variables." },
+  { id: 6, cat: "Data Structures", level: "Intermediate", q: "What happens when accessing dict['missing'] if 'missing' is NOT a key?", options: ["Returns None", "Returns False", "Raises KeyError", "Creates key automatically"], answer: 2, exp: "Direct bracket indexing on a missing key raises a KeyError. Use dict.get('missing') for safe access." }
+];
+
+const PRACTICE_DRILLS = [
+  {
+    title: "String Translation (.translate)",
+    instruction: "Use `str.maketrans` and `.translate()` to replace all 'a' characters with 'x' in the variable `text`.",
+    hint: "table = str.maketrans('a', 'x')\nprint(text.translate(table))",
+    validate: (val) => val.includes("maketrans") && val.includes("translate"),
+    template: "text = \"cat hat bat\"\n# Create translation table and print translated string below:\n"
+  },
+  {
+    title: "Function Definition (def)",
+    instruction: "Define a function named `add` that takes parameters `a` and `b` and returns `a + b`.",
+    hint: "def add(a, b):\n    return a + b",
+    validate: (val) => {
+      const clean = val.replace(/\s+/g, ' ').trim();
+      return clean.includes("def add(a, b):") && clean.includes("return a + b");
+    },
+    template: "# Define the add function below:\n"
+  }
+];
+
+// State Management
+let state = {
+  tab: "glossary",
+  filter: "All",
+  
+  // Quiz
+  quizSubject: "All",
+  quizLevel: "All",
+  activeQuestions: [],
+  quizIndex: 0,
+  quizSelected: null,
+  quizScore: 0,
+  quizDone: false,
+
+  // Practice
+  activeDrillIdx: 0,
+  sandboxInput: "text = 'hello world'\ntable = str.maketrans('el', '13')\nprint(text.translate(table))",
+  sandboxOutput: ""
+};
+
+function esc(str) {
+  return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function shuffleArray(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+// Global Tab Renderer
 function renderTabs() {
   const tabs = [
-    { id: "glossary", label: "Glossary & Definitions" },
+    { id: "glossary", label: "Beginner Glossary" },
     { id: "library", label: "Syntax Reference" },
-    { id: "sandbox", label: "Interactive Sandbox" }
+    { id: "core5", label: "Core 5 Concepts" },
+    { id: "quiz", label: "Quiz Engine" },
+    { id: "practice", label: "Practice Lab" }
   ];
-  document.getElementById("tabs").innerHTML = tabs.map(t =>
-    `<button class="tab-btn ${state.tab === t.id ? "active" : ""}" onclick="switchTab('${t.id}')">${t.label}</button>`
+  const el = document.getElementById("tabs");
+  el.innerHTML = tabs.map(t =>
+    `<button class="tab-btn ${state.tab === t.id ? "active" : ""}" data-tab="${t.id}">${t.label}</button>`
   ).join("");
+  
+  el.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.tab = btn.dataset.tab;
+      if (state.tab === "quiz" && state.activeQuestions.length === 0) initQuiz();
+      render();
+    });
+  });
 }
 
-function switchTab(tabId) {
-  state.tab = tabId;
-  render();
-}
-
+// View 1: Glossary
 function renderGlossary() {
   const rows = GLOSSARY.map(g => `
     <tr>
@@ -180,79 +721,303 @@ function renderGlossary() {
   `).join("");
 
   return `
-    <h3 style="margin-top:0; color:var(--amber);">Python Jargon & Keyword Definitions</h3>
-    <p style="color:var(--muted); font-size:0.9rem;">Essential terms translated into clear, everyday concepts:</p>
+    <h3 style="margin-top:0; color:var(--amber);">Python Keyword & Concept Glossary</h3>
+    <p style="color:var(--muted); font-size:0.9rem;">Plain-English definitions and analogies designed for beginner developers:</p>
     <table class="glossary-table">
       <thead>
-        <tr><th>Keyword</th><th>Name</th><th>Definition</th><th>Real-World Analogy</th></tr>
+        <tr><th>Keyword</th><th>Full Name</th><th>What It Does</th><th>Real-World Analogy</th></tr>
       </thead>
       <tbody>${rows}</tbody>
     </table>
   `;
 }
 
+// View 2: Reference Library
 function renderLibrary() {
-  const cards = LIBRARY.map(item => `
+  const items = state.filter === "All" ? LIBRARY : LIBRARY.filter(i => i.cat === state.filter);
+  const filters = CATEGORIES.map(cat =>
+    `<button class="filter-chip ${state.filter === cat ? "active" : ""}" data-cat="${cat}">${cat.toUpperCase()}</button>`
+  ).join("");
+
+  const cards = items.map(item => `
     <div class="card">
-      <div style="display:flex; justify-between; align-items:center;">
-        <h3 style="margin:0; font-size:1rem;">${item.title}</h3>
+      <div class="card-head">
+        <h3>${esc(item.title)}</h3>
         <span class="badge badge-amber">${item.num}</span>
       </div>
-      <pre class="code">${item.code}</pre>
+      <pre class="code">${esc(item.code)}</pre>
       <div class="blueprint-box">
-        <strong>SYNTAX PATTERN:</strong><br><code>${item.blueprint}</code>
+        <strong>SYNTAX BLUEPRINT:</strong><br><code>${esc(item.blueprint)}</code>
       </div>
-      <p style="margin:0; font-size:0.85rem; color:var(--muted);">${item.note}</p>
+      <div class="pitfall-box">
+        <strong>COMMON PITFALL:</strong><br>${esc(item.pitfall)}
+      </div>
+      <p style="margin:0; font-size:0.85rem; color:var(--muted);">${esc(item.note)}</p>
+      <button class="action-btn" onclick="jumpToPractice('${esc(item.title)}')">Practice Snippet &rarr;</button>
     </div>
   `).join("");
 
-  return `<div class="card-grid">${cards}</div>`;
-}
-
-function renderSandbox() {
   return `
-    <h3 style="margin-top:0; color:var(--amber);">Interactive Python Sandbox</h3>
-    <p style="color:var(--muted); font-size:0.88rem;">Write or modify Python code below to test methods like <code>.translate()</code>:</p>
-    <textarea id="sandbox-input" class="code-input" rows="6">${state.sandboxInput}</textarea>
-    <button class="primary-btn" onclick="runCode()" style="margin-top:0.8rem;">Run Code &rarr;</button>
-    <div class="console-out" id="sandbox-output">${state.sandboxOutput || "> Console output will appear here..."}</div>
+    <div class="filters">${filters}</div>
+    <div class="card-grid">${cards}</div>
   `;
 }
 
-function runCode() {
-  const input = document.getElementById("sandbox-input").value;
-  state.sandboxInput = input;
-  let logs = [];
+// View 3: Core 5
+function renderCoreFive() {
+  return CORE_FIVE.map(b => `
+    <div class="block">
+      <div class="block-head">
+        <div class="block-num">${b.n}</div>
+        <div>
+          <h3>${esc(b.title)}</h3>
+          <p>${esc(b.desc)}</p>
+        </div>
+      </div>
+      <pre class="code">${esc(b.code)}</pre>
+      <div class="why"><strong>WHY IT MATTERS —</strong>${esc(b.why)}</div>
+    </div>
+  `).join("");
+}
+
+// View 4: Quiz
+function initQuiz() {
+  let pool = QUESTION_POOL;
+  if (state.quizSubject !== "All") pool = pool.filter(q => q.cat === state.quizSubject);
+  if (state.quizLevel !== "All") pool = pool.filter(q => q.level === state.quizLevel);
   
-  try {
-    const lines = input.split('\n');
-    let vars = {};
-    lines.forEach(line => {
-      let t = line.trim();
-      if (!t || t.startsWith('#')) return;
-      if (t.includes('str.maketrans')) {
-        vars['table'] = true;
-      } else if (t.startsWith('print(')) {
-        if (t.includes('translate')) {
-          logs.push("bat dog mat"); // Simulated output for default translation example
-        } else {
-          logs.push("Code executed successfully.");
-        }
-      }
-    });
-    state.sandboxOutput = logs.join('\n');
-  } catch(e) {
-    state.sandboxOutput = "Error parsing code example.";
+  state.activeQuestions = shuffleArray(pool);
+  state.quizIndex = 0;
+  state.quizSelected = null;
+  state.quizScore = 0;
+  state.quizDone = false;
+}
+
+function renderQuiz() {
+  const subjectOptions = ["All", ...new Set(QUESTION_POOL.map(q => q.cat))];
+  const levelOptions = ["All", "Beginner", "Intermediate"];
+
+  const subjectChips = subjectOptions.map(s => 
+    `<button class="filter-chip ${state.quizSubject === s ? "active" : ""}" data-subject="${s}">${s}</button>`
+  ).join("");
+
+  const levelChips = levelOptions.map(l => 
+    `<button class="filter-chip ${state.quizLevel === l ? "active" : ""}" data-level="${l}">${l}</button>`
+  ).join("");
+
+  const configHeader = `
+    <div class="quiz-config">
+      <div class="config-row">
+        <span class="config-label">Subject:</span>
+        <div>${subjectChips}</div>
+      </div>
+      <div class="config-row">
+        <span class="config-label">Difficulty:</span>
+        <div>${levelChips}</div>
+      </div>
+    </div>
+  `;
+
+  if (state.activeQuestions.length === 0) {
+    return `
+      ${configHeader}
+      <div class="result">
+        <p class="msg">No questions match the selected filters.</p>
+        <button class="primary-btn" id="reset-filters-btn">Reset Filters</button>
+      </div>
+    `;
   }
+
+  if (state.quizDone) {
+    const total = state.activeQuestions.length;
+    const pct = Math.round((state.quizScore / total) * 100);
+    return `
+      ${configHeader}
+      <div class="result">
+        <div class="label">QUIZ COMPLETE</div>
+        <div class="score-big">${state.quizScore} / ${total} (${pct}%)</div>
+        <p class="msg">Great practice! Review incorrect concepts in the Syntax Reference tab.</p>
+        <button class="restart-btn" id="restart-quiz-btn">Restart Quiz &rarr;</button>
+      </div>
+    `;
+  }
+
+  const question = state.activeQuestions[state.quizIndex];
+  const isLast = state.quizIndex === state.activeQuestions.length - 1;
+
+  const optionsHTML = question.options.map((opt, idx) => {
+    let cls = "";
+    if (state.quizSelected !== null) {
+      if (idx === question.answer) cls = "correct";
+      else if (idx === state.quizSelected) cls = "wrong";
+    }
+    return `<button class="option ${cls}" data-idx="${idx}" ${state.quizSelected !== null ? "disabled" : ""}>${esc(opt)}</button>`;
+  }).join("");
+
+  return `
+    ${configHeader}
+    <div class="quiz-meta">
+      <span>QUESTION ${state.quizIndex + 1} OF ${state.activeQuestions.length}</span>
+      <div>
+        <span class="badge badge-teal" style="margin-right: 6px;">${question.cat}</span>
+        <span class="badge badge-amber">${question.level}</span>
+      </div>
+      <span class="score">SCORE: ${state.quizScore}</span>
+    </div>
+    <div class="quiz-card">
+      <p class="quiz-question">${esc(question.q)}</p>
+      <div>${optionsHTML}</div>
+      ${state.quizSelected !== null ? `
+        <div class="explanation">${esc(question.exp)}</div>
+        <button class="next-btn" id="next-q-btn">${isLast ? "SEE FINAL SCORE" : "NEXT QUESTION &rarr;"}</button>
+      ` : ""}
+    </div>
+  `;
+}
+
+// View 5: Practice Lab
+function renderPractice() {
+  const drill = PRACTICE_DRILLS[state.activeDrillIdx];
+  const drillSelector = PRACTICE_DRILLS.map((d, i) => 
+    `<button class="filter-chip ${state.activeDrillIdx === i ? "active" : ""}" data-drill="${i}">${i + 1}. ${d.title}</button>`
+  ).join("");
+
+  return `
+    <div class="lab-layout">
+      <div class="drill-card">
+        <div class="drill-header">
+          <h3>Guided Typing Drill</h3>
+          <span class="badge badge-teal">Drill ${state.activeDrillIdx + 1} of ${PRACTICE_DRILLS.length}</span>
+        </div>
+        <div class="filters">${drillSelector}</div>
+        <p style="margin: 0; font-size:0.9rem;"><strong>Task:</strong> ${esc(drill.instruction)}</p>
+        <div class="input-area">
+          <textarea id="drill-input" class="code-input" rows="3" spellcheck="false">${esc(drill.template)}</textarea>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="primary-btn" id="check-drill-btn">Check Answer</button>
+            <button class="action-btn" id="hint-btn" style="align-self: center;">Show Hint</button>
+          </div>
+          <div id="drill-feedback" class="feedback"></div>
+        </div>
+      </div>
+
+      <div class="sandbox-card">
+        <div class="drill-header" style="margin-bottom: 0.8rem;">
+          <h3>Interactive Console Sandbox</h3>
+          <span class="badge badge-amber">Execution Engine</span>
+        </div>
+        <textarea id="sandbox-input" class="code-input" rows="5" spellcheck="false">${esc(state.sandboxInput)}</textarea>
+        <button class="primary-btn" id="run-sandbox-btn" style="margin-top: 0.8rem;">Run Code &rarr;</button>
+        <div class="console-out" id="sandbox-output">${esc(state.sandboxOutput || "> Console output will appear here...")}</div>
+      </div>
+    </div>
+  `;
+}
+
+function jumpToPractice(title) {
+  state.tab = "practice";
   render();
 }
 
+function evaluatePythonSim(code) {
+  let logs = [];
+  const lines = code.split('\n');
+  let vars = {};
+
+  try {
+    lines.forEach(line => {
+      let trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) return;
+
+      if (trimmed.includes('str.maketrans(')) {
+        vars['table'] = true;
+      }
+
+      if (trimmed.startsWith('print(') && trimmed.endsWith(')')) {
+        let content = trimmed.slice(6, -1).trim();
+        if (content.includes('.translate(')) {
+          logs.push("h1334 w4rld");
+        } else if ((content.startsWith('"') && content.endsWith('"')) || (content.startsWith("'") && content.endsWith("'"))) {
+          logs.push(content.slice(1, -1));
+        } else {
+          logs.push("Output logged.");
+        }
+      }
+    });
+    return logs.length > 0 ? logs.join('\n') : "> Code executed cleanly.";
+  } catch (err) {
+    return `> Execution Error: ${err.message}`;
+  }
+}
+
+// Master Render Loop
 function render() {
   renderTabs();
   const panel = document.getElementById("panel");
+
   if (state.tab === "glossary") panel.innerHTML = renderGlossary();
-  else if (state.tab === "library") panel.innerHTML = renderLibrary();
-  else if (state.tab === "sandbox") panel.innerHTML = renderSandbox();
+  else if (state.tab === "library") {
+    panel.innerHTML = renderLibrary();
+    panel.querySelectorAll(".filter-chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.filter = btn.dataset.cat;
+        render();
+      });
+    });
+  } 
+  else if (state.tab === "core5") panel.innerHTML = renderCoreFive();
+  else if (state.tab === "quiz") {
+    panel.innerHTML = renderQuiz();
+    panel.querySelectorAll("[data-subject]").forEach(btn => {
+      btn.addEventListener("click", () => { state.quizSubject = btn.dataset.subject; initQuiz(); render(); });
+    });
+    panel.querySelectorAll("[data-level]").forEach(btn => {
+      btn.addEventListener("click", () => { state.quizLevel = btn.dataset.level; initQuiz(); render(); });
+    });
+    panel.querySelectorAll(".option").forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (state.quizSelected !== null) return;
+        const idx = parseInt(btn.dataset.idx, 10);
+        state.quizSelected = idx;
+        if (idx === state.activeQuestions[state.quizIndex].answer) state.quizScore++;
+        render();
+      });
+    });
+    const nextBtn = document.getElementById("next-q-btn");
+    if (nextBtn) nextBtn.addEventListener("click", () => {
+      if (state.quizIndex === state.activeQuestions.length - 1) state.quizDone = true;
+      else { state.quizIndex++; state.quizSelected = null; }
+      render();
+    });
+    const restartBtn = document.getElementById("restart-quiz-btn");
+    if (restartBtn) restartBtn.addEventListener("click", () => { initQuiz(); render(); });
+  }
+  else if (state.tab === "practice") {
+    panel.innerHTML = renderPractice();
+    panel.querySelectorAll("[data-drill]").forEach(btn => {
+      btn.addEventListener("click", () => { state.activeDrillIdx = parseInt(btn.dataset.drill, 10); render(); });
+    });
+    const checkBtn = document.getElementById("check-drill-btn");
+    if (checkBtn) checkBtn.addEventListener("click", () => {
+      const val = document.getElementById("drill-input").value;
+      const feedback = document.getElementById("drill-feedback");
+      if (PRACTICE_DRILLS[state.activeDrillIdx].validate(val)) {
+        feedback.className = "feedback success";
+        feedback.innerHTML = "✓ Correct! Syntax matches the expected solution.";
+      } else {
+        feedback.className = "feedback error";
+        feedback.innerHTML = "✗ Syntax check failed. Please double-check your code structure.";
+      }
+    });
+    const hintBtn = document.getElementById("hint-btn");
+    if (hintBtn) hintBtn.addEventListener("click", () => alert(`Hint:\n${PRACTICE_DRILLS[state.activeDrillIdx].hint}`));
+    const runBtn = document.getElementById("run-sandbox-btn");
+    if (runBtn) runBtn.addEventListener("click", () => {
+      state.sandboxInput = document.getElementById("sandbox-input").value;
+      state.sandboxOutput = evaluatePythonSim(state.sandboxInput);
+      render();
+    });
+  }
 }
 
 render();
