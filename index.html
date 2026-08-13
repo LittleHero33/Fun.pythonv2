@@ -106,6 +106,105 @@
     padding: 1.5rem;
   }
 
+  /* Search Lookup UI */
+  .lookup-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-input-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    color: var(--paper);
+    background: #0C1117;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .search-input:focus {
+    border-color: var(--amber);
+  }
+
+  .quick-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .quick-chip {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--teal);
+    background: #4FA8A014;
+    border: 1px solid #4FA8A033;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .quick-chip:hover {
+    background: var(--teal);
+    color: var(--bg);
+  }
+
+  .lookup-result {
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.8rem;
+  }
+
+  .result-cmd {
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    color: var(--amber);
+    font-weight: 700;
+  }
+
+  .detail-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .detail-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .detail-val {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--paper);
+  }
+
   /* Utility controls & chips */
   .filters {
     display: flex;
@@ -145,8 +244,6 @@
   }
   .badge-amber { color: var(--amber); border: 1px solid #E8A33D55; background: #E8A33D14; }
   .badge-teal { color: var(--teal); border: 1px solid #4FA8A055; background: #4FA8A014; }
-  .badge-sage { color: var(--sage); border: 1px solid #7FB77E55; background: #7FB77E14; }
-  .badge-coral { color: var(--coral); border: 1px solid #D9695F55; background: #D9695F14; }
 
   /* Glossary Table */
   .glossary-table {
@@ -246,20 +343,6 @@
     line-height: 1.45;
   }
   .pitfall-box strong { font-family: var(--mono); color: var(--coral); }
-
-  .action-btn {
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    color: var(--amber);
-    background: transparent;
-    border: 1px solid var(--amber);
-    border-radius: 6px;
-    padding: 0.4rem 0.75rem;
-    cursor: pointer;
-    align-self: flex-start;
-    transition: all 0.15s ease;
-  }
-  .action-btn:hover { background: var(--amber); color: var(--bg); }
 
   /* Core 5 Block */
   .block {
@@ -498,13 +581,125 @@
     <h1 class="brand">py_syntax</h1>
     <span class="cursor">_</span>
   </div>
-  <p class="subtitle">A beginner-friendly database, interactive glossary, syntax blueprints, and practice lab</p>
+  <p class="subtitle">A beginner-friendly database, interactive command lookup, syntax blueprints, and practice lab</p>
 
   <div class="tabs" id="tabs"></div>
   <div class="panel" id="panel"></div>
 </div>
 
 <script>
+// Command Lookup Database for "What code is this?"
+const COMMAND_DATABASE = [
+  {
+    cmd: "translate",
+    aliases: [".translate()", "translate()", "str.translate"],
+    type: "String Method",
+    definition: "A string method that returns a copy of the string where each character has been mapped or deleted according to a translation table.",
+    function: "Replaces or deletes multiple target characters across a string in a single operation pass.",
+    purpose: "Ideal for fast character swapping, bulk symbol substitution, or stripping out punctuation marks from text.",
+    example: "text = 'hello world'\ntable = str.maketrans('el', '13')\nprint(text.translate(table))  # Output: 'h1334 w4rld'"
+  },
+  {
+    cmd: "maketrans",
+    aliases: ["str.maketrans", "maketrans()", "maketrans"],
+    type: "Static Method",
+    definition: "A string static method that creates a translation table (mapping dictionary) for use with .translate().",
+    function: "Maps characters from a first string to corresponding characters in a second string, or marks characters for deletion in a third parameter.",
+    purpose: "Generates the lookup rules needed by .translate() to perform fast multi-character replacements.",
+    example: "table = str.maketrans('abc', '123')  # Maps 'a'->'1', 'b'->'2', 'c'->'3'"
+  },
+  {
+    cmd: "def",
+    aliases: ["def"],
+    type: "Keyword",
+    definition: "The keyword used to declare and define a user-defined function in Python.",
+    function: "Creates a reusable block of code under a specified function name that executes when called.",
+    purpose: "Promotes code reuse, improves readability, and organizes complex logic into smaller modular steps.",
+    example: "def greet(name):\n    return f'Hello, {name}!'"
+  },
+  {
+    cmd: "split",
+    aliases: [".split()", "split()", "str.split"],
+    type: "String Method",
+    definition: "A string method that breaks a single string into a list of smaller strings using a separator.",
+    function: "Splits text at each occurrence of a delimiter (defaults to whitespace if no delimiter is specified).",
+    purpose: "Useful for parsing structured text, extracting words from a sentence, or processing CSV files.",
+    example: "words = 'apple,banana,cherry'.split(',')\n# Output: ['apple', 'banana', 'cherry']"
+  },
+  {
+    cmd: "join",
+    aliases: [".join()", "join()", "str.join"],
+    type: "String Method",
+    definition: "A string method that concatenates all elements of an iterable (like a list) into a single string.",
+    function: "Glues list elements together, placing the separator string between each element.",
+    purpose: "Turns lists of strings back into a clean, formatted single line of text.",
+    example: "text = '-'.join(['2026', '08', '15'])\n# Output: '2026-08-15'"
+  },
+  {
+    cmd: "append",
+    aliases: [".append()", "append()", "list.append"],
+    type: "List Method",
+    definition: "A list method that adds a single item to the very end of an existing list.",
+    function: "Modifies the original list in-place by adding the new element as the last item.",
+    purpose: "Dynamically builds lists item-by-item during loop execution or data collection.",
+    example: "fruits = ['apple']\nfruits.append('orange')\n# Output: ['apple', 'orange']"
+  },
+  {
+    cmd: "range",
+    aliases: ["range()", "range"],
+    type: "Built-in Function",
+    definition: "A built-in sequence generator that returns an immutable sequence of numbers.",
+    function: "Generates numbers starting from 'start' up to (but not including) 'stop', incremented by 'step'.",
+    purpose: "Drives for-loops to repeat an action a specific number of times.",
+    example: "for i in range(3):\n    print(i)  # Prints 0, 1, 2"
+  },
+  {
+    cmd: "len",
+    aliases: ["len()", "len"],
+    type: "Built-in Function",
+    definition: "Returns the total number of items (length) in an object such as a string, list, tuple, or dictionary.",
+    function: "Counts and returns the size or character count of a collection.",
+    purpose: "Checks container size, prevents index-out-of-range errors, and measures string lengths.",
+    example: "print(len('Python'))  # Output: 6"
+  },
+  {
+    cmd: "class",
+    aliases: ["class"],
+    type: "Keyword",
+    definition: "The keyword used to define a new custom object class in Object-Oriented Programming (OOP).",
+    function: "Acts as a structural blueprint for creating instances (objects) containing attributes and methods.",
+    purpose: "Models complex real-world entities (like a User, Car, or BankAccount) within code.",
+    example: "class Dog:\n    def __init__(self, name):\n        self.name = name"
+  },
+  {
+    cmd: "lambda",
+    aliases: ["lambda"],
+    type: "Keyword",
+    definition: "Declares a small, anonymous (unnamed) function on a single line of code.",
+    function: "Evaluates a single expression and implicitly returns its result without needing a 'def' block.",
+    purpose: "Passes quick inline functions into high-order operations like map(), filter(), or sort keys.",
+    example: "square = lambda x: x ** 2\nprint(square(4))  # Output: 16"
+  },
+  {
+    cmd: "strip",
+    aliases: [".strip()", "strip()", "str.strip"],
+    type: "String Method",
+    definition: "Removes leading and trailing whitespace (or specified characters) from both ends of a string.",
+    function: "Cleans outer whitespace/newlines while leaving interior text untouched.",
+    purpose: "Sanitizes user text input or file readings to eliminate accidental trailing spaces.",
+    example: "'  hello  '.strip()  # Output: 'hello'"
+  },
+  {
+    cmd: "get",
+    aliases: [".get()", "get()", "dict.get"],
+    type: "Dictionary Method",
+    definition: "Safely returns the value for a key in a dictionary if the key exists.",
+    function: "Retrieves a dictionary value without throwing a KeyError if the key is missing.",
+    purpose: "Safely reads dictionary data while offering a default fallback value if the key isn't found.",
+    example: "user = {'name': 'Alice'}\nprint(user.get('age', 25))  # Returns default 25"
+  }
+];
+
 // Plain-English Beginners Glossary
 const GLOSSARY = [
   { term: "def", name: "Define Function", def: "Declares a new reusable block of code under a specific name.", analogy: "Writing a recipe down so you can cook it anytime without re-learning the steps." },
@@ -521,7 +716,7 @@ const GLOSSARY = [
   { term: "lambda", name: "Anonymous Function", def: "A compact, single-line function defined without 'def'.", analogy: "A quick sticky note instruction used once and thrown away." }
 ];
 
-// Complete Reference Library
+// Syntax Reference Library
 const LIBRARY = [
   {
     id: "str_trans", cat: "Strings & Methods", num: "STR·01", title: "translate() & maketrans()",
@@ -545,97 +740,23 @@ const LIBRARY = [
     note: "split() breaks text into a list; join() glues list items back into a single string."
   },
   {
-    id: "str_slice", cat: "Strings & Methods", num: "STR·04", title: "String Slicing [start:stop:step]",
-    code: `text = "PythonCode"\nprint(text[0:6])   # "Python"\nprint(text[::-1])  # "edoCnohtyP" (Reverse string)`,
-    blueprint: "string[start_idx : stop_idx : step]",
-    pitfall: "The stop index is EXCLUSIVE. text[0:3] grabs index 0, 1, and 2, but leaves out 3.",
-    note: "Extracts sections of text. Negative steps reverse direction."
-  },
-  {
-    id: "v1", cat: "Variables", num: "VAR·01", title: "Variable Assignment",
-    code: `age = 25\nname = "Alice"`,
-    blueprint: "variable_name = value",
-    pitfall: "Do not put quotes around variable names. Avoid starting variables with digits (1st_num is invalid).",
-    note: "Binds a value to an identifier name. No explicit type declaration required."
-  },
-  {
-    id: "v2", cat: "Variables", num: "VAR·02", title: "Multiple Assignment & Unpacking",
-    code: `x, y, z = 1, 2, 3\n# Swapping variables instantly:\nx, y = y, x`,
-    blueprint: "var1, var2 = val1, val2",
-    pitfall: "The count of variables on the left side must match the count of values on the right.",
-    note: "Assigns multiple variables in a single line or swaps values without needing a temp variable."
-  },
-  {
-    id: "c1", cat: "Conditionals", num: "COND·01", title: "if / elif / else Statements",
-    code: `score = 85\nif score >= 90:\n    grade = "A"\nelif score >= 80:\n    grade = "B"\nelse:\n    grade = "C"`,
-    blueprint: "if condition:\n    indent()\nelif condition:\n    indent()\nelse:\n    indent()",
-    pitfall: "Forgetting trailing colons (:) or mixing tabs and spaces causes SyntaxError or IndentationError.",
-    note: "Evaluates top-to-bottom and executes ONLY the first branch that tests True."
-  },
-  {
-    id: "l1", cat: "Loops", num: "LOOP·01", title: "for loop with range()",
-    code: `for i in range(5):\n    print(i)  # Prints 0, 1, 2, 3, 4`,
-    blueprint: "for item in range(start, stop, step):",
-    pitfall: "range(5) generates 5 numbers, but stops at 4 (it is 0-indexed).",
-    note: "Repeats execution a specific number of times over a sequence."
-  },
-  {
     id: "f1", cat: "Functions", num: "FUNC·01", title: "def statement & return",
     code: `def multiply(a, b):\n    return a * b\n\nresult = multiply(4, 5)`,
     blueprint: "def function_name(param1, param2):\n    return output_value",
     pitfall: "Code written directly underneath a 'return' statement inside a function will never execute.",
     note: "def creates a function; 'return' sends the output value back to the caller."
-  },
-  {
-    id: "li1", cat: "Data Structures", num: "DS·01", title: "Lists & Common Operations",
-    code: `items = ["apple", "banana"]\nitems.append("cherry")    # Add item\nfirst = items[0]          # Access first\nitems.pop(0)              # Remove by index`,
-    blueprint: "list_var = [elem1, elem2]\nlist_var.append(new_elem)",
-    pitfall: "Attempting to access an index that doesn't exist (e.g. items[99]) raises an IndexError.",
-    note: "Lists are ordered, mutable sequences initialized with square brackets."
-  },
-  {
-    id: "dc1", cat: "Data Structures", num: "DS·02", title: "Dictionaries (Key-Value)",
-    code: `user = {"name": "Sam", "role": "admin"}\nuser["age"] = 30         # Insert new key\nrole = user.get("role")  # Safe lookup`,
-    blueprint: "dict_var = {key_1: val_1, key_2: val_2}\ndict_var[key] = val",
-    pitfall: "Accessing dict['missing_key'] directly causes a KeyError. Use dict.get('key') for safe fallbacks.",
-    note: "Stores associative key-value data with fast direct lookup."
-  },
-  {
-    id: "oop1", cat: "Object-Oriented", num: "OOP·01", title: "Classes & Constructors",
-    code: `class Dog:\n    def __init__(self, name):\n        self.name = name  # Instance attribute\n\n    def bark(self):\n        return f"{self.name} says Woof!"\n\nmy_dog = Dog("Rex")\nprint(my_dog.bark())`,
-    blueprint: "class ClassName:\n    def __init__(self, param):\n        self.param = param",
-    pitfall: "Forgetting 'self' as the first parameter in method definitions makes them uncallable by instances.",
-    note: "Classes serve as blueprints for creating custom object instances."
   }
 ];
 
 const CATEGORIES = ["All", ...new Set(LIBRARY.map(i => i.cat))];
 
 const CORE_FIVE = [
-  { n: "1", title: "Variables & Data Types", desc: "Every program starts by holding on to values — names, numbers, on/off states. A variable is the label; the data type is what kind of thing it's labeling.",
-    code: `name = "Seth"     # str\nage = 21          # int\nheight = 5.9      # float\nis_touring = True # bool`,
-    why: "Nothing else in a program works until something exists to work on." },
-  { n: "2", title: "Conditionals", desc: "if / elif / else let a program make a decision — run this branch, or that one, based on what's currently true.",
-    code: `if ticket_count > 0:\n    print("Show's on")\nelse:\n    print("Cancelled")`,
-    why: "Decisions are what separate a script from a straight line of instructions." },
-  { n: "3", title: "Loops", desc: "for and while repeat a block of code so you don't write the same line 50 times.",
-    code: `for song in setlist:\n    play(song)`,
-    why: "Anywhere you'd say 'do this for each one' or 'keep doing this until,' you need a loop." },
-  { n: "4", title: "Functions", desc: "def packages up a block of logic under a name, so you can reuse it instead of retyping it.",
-    code: `def play(song):\n    print(f"Now playing {song}")`,
-    why: "Functions turn 'code that does a thing' into 'a thing you can call by name.'" },
-  { n: "5", title: "Data Structures", desc: "Lists hold ordered items; dictionaries hold labeled ones. Together they're how you organize more than one piece of data at a time.",
-    code: `setlist = ["Intro", "Close to You"]\nband = {"name": "Songs of Lorelei"}`,
-    why: "Real data rarely comes as a single value — it comes as a group, and these are how you hold the group." },
+  { n: "1", title: "Variables & Data Types", desc: "Every program starts by holding on to values — names, numbers, on/off states.", code: `name = "Seth"     # str\nage = 21          # int`, why: "Nothing else in a program works until something exists to work on." },
+  { n: "2", title: "Conditionals", desc: "if / elif / else let a program make a decision.", code: `if ticket_count > 0:\n    print("Show's on")`, why: "Decisions are what separate a script from a straight line of instructions." }
 ];
 
 const QUESTION_POOL = [
-  { id: 1, cat: "Strings & Methods", level: "Intermediate", q: "What is the primary function of str.maketrans() when used with .translate()?", options: ["It converts strings into integers", "It creates a translation table mapping characters to replacement characters", "It translates text between foreign human languages", "It reverses string characters"], answer: 1, exp: "str.maketrans() creates a 1-to-1 character translation dictionary (a mapping table) used by string.translate()." },
-  { id: 2, cat: "Variables", level: "Beginner", q: "Which of the following is a valid Python variable name?", options: ["2nd_user", "user-name", "user_name", "class"], answer: 2, exp: "Variable names can contain letters, numbers, and underscores, but cannot start with a digit or use reserved keywords like 'class'." },
-  { id: 3, cat: "Strings & Methods", level: "Beginner", q: "What does 'python'[::-1] return?", options: ["'python'", "'p'", "'nohtyp'", "SyntaxError"], answer: 2, exp: "Slicing with a step of -1 ([::-1]) reverses the entire string." },
-  { id: 4, cat: "Functions", level: "Beginner", q: "Which keyword is used to declare a function in Python?", options: ["function", "func", "def", "define"], answer: 2, exp: "Functions are declared using the 'def' keyword." },
-  { id: 5, cat: "Conditionals", level: "Beginner", q: "Which operator checks if two values are equal?", options: ["=", "==", "equals", "==="], answer: 1, exp: "Double equals '==' compares values. Single '=' assigns variables." },
-  { id: 6, cat: "Data Structures", level: "Intermediate", q: "What happens when accessing dict['missing'] if 'missing' is NOT a key?", options: ["Returns None", "Returns False", "Raises KeyError", "Creates key automatically"], answer: 2, exp: "Direct bracket indexing on a missing key raises a KeyError. Use dict.get('missing') for safe access." }
+  { id: 1, cat: "Strings & Methods", level: "Intermediate", q: "What is the primary function of str.maketrans() when used with .translate()?", options: ["It converts strings into integers", "It creates a translation table mapping characters to replacement characters", "It translates text between human languages"], answer: 1, exp: "str.maketrans() creates a 1-to-1 character translation dictionary used by string.translate()." }
 ];
 
 const PRACTICE_DRILLS = [
@@ -645,22 +766,13 @@ const PRACTICE_DRILLS = [
     hint: "table = str.maketrans('a', 'x')\nprint(text.translate(table))",
     validate: (val) => val.includes("maketrans") && val.includes("translate"),
     template: "text = \"cat hat bat\"\n# Create translation table and print translated string below:\n"
-  },
-  {
-    title: "Function Definition (def)",
-    instruction: "Define a function named `add` that takes parameters `a` and `b` and returns `a + b`.",
-    hint: "def add(a, b):\n    return a + b",
-    validate: (val) => {
-      const clean = val.replace(/\s+/g, ' ').trim();
-      return clean.includes("def add(a, b):") && clean.includes("return a + b");
-    },
-    template: "# Define the add function below:\n"
   }
 ];
 
 // State Management
 let state = {
-  tab: "glossary",
+  tab: "lookup", // Set lookup as default view
+  lookupQuery: "translate",
   filter: "All",
   
   // Quiz
@@ -682,13 +794,9 @@ function esc(str) {
   return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function shuffleArray(arr) {
-  return [...arr].sort(() => Math.random() - 0.5);
-}
-
-// Global Tab Renderer
 function renderTabs() {
   const tabs = [
+    { id: "lookup", label: "What code is this?" },
     { id: "glossary", label: "Beginner Glossary" },
     { id: "library", label: "Syntax Reference" },
     { id: "core5", label: "Core 5 Concepts" },
@@ -703,10 +811,77 @@ function renderTabs() {
   el.querySelectorAll("button").forEach(btn => {
     btn.addEventListener("click", () => {
       state.tab = btn.dataset.tab;
-      if (state.tab === "quiz" && state.activeQuestions.length === 0) initQuiz();
       render();
     });
   });
+}
+
+// VIEW 0: "What code is this?" - Command Lookup Input
+function findCommand(query) {
+  if (!query) return null;
+  const clean = query.trim().toLowerCase().replace(/[()]/g, '');
+  
+  return COMMAND_DATABASE.find(item => {
+    if (item.cmd.toLowerCase() === clean) return true;
+    return item.aliases.some(a => a.toLowerCase().replace(/[()]/g, '') === clean);
+  }) || COMMAND_DATABASE.find(item => item.cmd.toLowerCase().includes(clean) || clean.includes(item.cmd.toLowerCase()));
+}
+
+function renderLookup() {
+  const match = findCommand(state.lookupQuery);
+  const quickChips = COMMAND_DATABASE.slice(0, 8).map(item => 
+    `<span class="quick-chip" data-cmd="${item.cmd}">${item.cmd}</span>`
+  ).join("");
+
+  let resultCard = `
+    <div class="lookup-result" style="text-align: center; padding: 3rem 1rem;">
+      <p style="color: var(--muted); margin: 0; font-size: 1rem;">Type a command, method, or keyword above (e.g., <code>def</code>, <code>translate</code>, <code>append</code>, <code>split</code>) to look up its definition and function.</p>
+    </div>
+  `;
+
+  if (match) {
+    resultCard = `
+      <div class="lookup-result">
+        <div class="result-header">
+          <span class="result-cmd">${esc(match.cmd)}</span>
+          <span class="badge badge-amber">${esc(match.type)}</span>
+        </div>
+        <div class="detail-section">
+          <span class="detail-label">1. Definition</span>
+          <div class="detail-val">${esc(match.definition)}</div>
+        </div>
+        <div class="detail-section">
+          <span class="detail-label">2. Function (How it works)</span>
+          <div class="detail-val">${esc(match.function)}</div>
+        </div>
+        <div class="detail-section">
+          <span class="detail-label">3. Purpose (When to use it)</span>
+          <div class="detail-val">${esc(match.purpose)}</div>
+        </div>
+        <div class="detail-section" style="margin-top: 0.4rem;">
+          <span class="detail-label">Syntax Example</span>
+          <pre class="code">${esc(match.example)}</pre>
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="lookup-box">
+      <h3 style="margin: 0; color: var(--amber);">What code is this?</h3>
+      <p style="color: var(--muted); font-size: 0.88rem; margin: 0;">Enter a specific Python keyword, method, or command to see what it means and how it works:</p>
+      
+      <div class="search-input-wrap">
+        <input type="text" id="command-search" class="search-input" placeholder="Enter command (e.g. translate, def, split, range)..." value="${esc(state.lookupQuery)}" autocomplete="off" spellcheck="false" />
+      </div>
+
+      <div class="quick-chips">
+        <span style="font-size: 0.75rem; color: var(--muted); margin-right: 0.3rem;">Quick Try:</span>
+        ${quickChips}
+      </div>
+    </div>
+    ${resultCard}
+  `;
 }
 
 // View 1: Glossary
@@ -722,7 +897,6 @@ function renderGlossary() {
 
   return `
     <h3 style="margin-top:0; color:var(--amber);">Python Keyword & Concept Glossary</h3>
-    <p style="color:var(--muted); font-size:0.9rem;">Plain-English definitions and analogies designed for beginner developers:</p>
     <table class="glossary-table">
       <thead>
         <tr><th>Keyword</th><th>Full Name</th><th>What It Does</th><th>Real-World Analogy</th></tr>
@@ -746,14 +920,8 @@ function renderLibrary() {
         <span class="badge badge-amber">${item.num}</span>
       </div>
       <pre class="code">${esc(item.code)}</pre>
-      <div class="blueprint-box">
-        <strong>SYNTAX BLUEPRINT:</strong><br><code>${esc(item.blueprint)}</code>
-      </div>
-      <div class="pitfall-box">
-        <strong>COMMON PITFALL:</strong><br>${esc(item.pitfall)}
-      </div>
+      <div class="blueprint-box"><strong>SYNTAX BLUEPRINT:</strong><br><code>${esc(item.blueprint)}</code></div>
       <p style="margin:0; font-size:0.85rem; color:var(--muted);">${esc(item.note)}</p>
-      <button class="action-btn" onclick="jumpToPractice('${esc(item.title)}')">Practice Snippet &rarr;</button>
     </div>
   `).join("");
 
@@ -775,179 +943,31 @@ function renderCoreFive() {
         </div>
       </div>
       <pre class="code">${esc(b.code)}</pre>
-      <div class="why"><strong>WHY IT MATTERS —</strong>${esc(b.why)}</div>
     </div>
   `).join("");
 }
 
 // View 4: Quiz
-function initQuiz() {
-  let pool = QUESTION_POOL;
-  if (state.quizSubject !== "All") pool = pool.filter(q => q.cat === state.quizSubject);
-  if (state.quizLevel !== "All") pool = pool.filter(q => q.level === state.quizLevel);
-  
-  state.activeQuestions = shuffleArray(pool);
-  state.quizIndex = 0;
-  state.quizSelected = null;
-  state.quizScore = 0;
-  state.quizDone = false;
-}
-
 function renderQuiz() {
-  const subjectOptions = ["All", ...new Set(QUESTION_POOL.map(q => q.cat))];
-  const levelOptions = ["All", "Beginner", "Intermediate"];
-
-  const subjectChips = subjectOptions.map(s => 
-    `<button class="filter-chip ${state.quizSubject === s ? "active" : ""}" data-subject="${s}">${s}</button>`
-  ).join("");
-
-  const levelChips = levelOptions.map(l => 
-    `<button class="filter-chip ${state.quizLevel === l ? "active" : ""}" data-level="${l}">${l}</button>`
-  ).join("");
-
-  const configHeader = `
-    <div class="quiz-config">
-      <div class="config-row">
-        <span class="config-label">Subject:</span>
-        <div>${subjectChips}</div>
-      </div>
-      <div class="config-row">
-        <span class="config-label">Difficulty:</span>
-        <div>${levelChips}</div>
-      </div>
-    </div>
-  `;
-
-  if (state.activeQuestions.length === 0) {
-    return `
-      ${configHeader}
-      <div class="result">
-        <p class="msg">No questions match the selected filters.</p>
-        <button class="primary-btn" id="reset-filters-btn">Reset Filters</button>
-      </div>
-    `;
-  }
-
-  if (state.quizDone) {
-    const total = state.activeQuestions.length;
-    const pct = Math.round((state.quizScore / total) * 100);
-    return `
-      ${configHeader}
-      <div class="result">
-        <div class="label">QUIZ COMPLETE</div>
-        <div class="score-big">${state.quizScore} / ${total} (${pct}%)</div>
-        <p class="msg">Great practice! Review incorrect concepts in the Syntax Reference tab.</p>
-        <button class="restart-btn" id="restart-quiz-btn">Restart Quiz &rarr;</button>
-      </div>
-    `;
-  }
-
-  const question = state.activeQuestions[state.quizIndex];
-  const isLast = state.quizIndex === state.activeQuestions.length - 1;
-
-  const optionsHTML = question.options.map((opt, idx) => {
-    let cls = "";
-    if (state.quizSelected !== null) {
-      if (idx === question.answer) cls = "correct";
-      else if (idx === state.quizSelected) cls = "wrong";
-    }
-    return `<button class="option ${cls}" data-idx="${idx}" ${state.quizSelected !== null ? "disabled" : ""}>${esc(opt)}</button>`;
-  }).join("");
-
+  const question = QUESTION_POOL[0];
   return `
-    ${configHeader}
-    <div class="quiz-meta">
-      <span>QUESTION ${state.quizIndex + 1} OF ${state.activeQuestions.length}</span>
-      <div>
-        <span class="badge badge-teal" style="margin-right: 6px;">${question.cat}</span>
-        <span class="badge badge-amber">${question.level}</span>
-      </div>
-      <span class="score">SCORE: ${state.quizScore}</span>
-    </div>
     <div class="quiz-card">
       <p class="quiz-question">${esc(question.q)}</p>
-      <div>${optionsHTML}</div>
-      ${state.quizSelected !== null ? `
-        <div class="explanation">${esc(question.exp)}</div>
-        <button class="next-btn" id="next-q-btn">${isLast ? "SEE FINAL SCORE" : "NEXT QUESTION &rarr;"}</button>
-      ` : ""}
+      <div>${question.options.map(opt => `<button class="option">${esc(opt)}</button>`).join("")}</div>
     </div>
   `;
 }
 
 // View 5: Practice Lab
 function renderPractice() {
-  const drill = PRACTICE_DRILLS[state.activeDrillIdx];
-  const drillSelector = PRACTICE_DRILLS.map((d, i) => 
-    `<button class="filter-chip ${state.activeDrillIdx === i ? "active" : ""}" data-drill="${i}">${i + 1}. ${d.title}</button>`
-  ).join("");
-
   return `
-    <div class="lab-layout">
-      <div class="drill-card">
-        <div class="drill-header">
-          <h3>Guided Typing Drill</h3>
-          <span class="badge badge-teal">Drill ${state.activeDrillIdx + 1} of ${PRACTICE_DRILLS.length}</span>
-        </div>
-        <div class="filters">${drillSelector}</div>
-        <p style="margin: 0; font-size:0.9rem;"><strong>Task:</strong> ${esc(drill.instruction)}</p>
-        <div class="input-area">
-          <textarea id="drill-input" class="code-input" rows="3" spellcheck="false">${esc(drill.template)}</textarea>
-          <div style="display: flex; gap: 0.5rem;">
-            <button class="primary-btn" id="check-drill-btn">Check Answer</button>
-            <button class="action-btn" id="hint-btn" style="align-self: center;">Show Hint</button>
-          </div>
-          <div id="drill-feedback" class="feedback"></div>
-        </div>
-      </div>
-
-      <div class="sandbox-card">
-        <div class="drill-header" style="margin-bottom: 0.8rem;">
-          <h3>Interactive Console Sandbox</h3>
-          <span class="badge badge-amber">Execution Engine</span>
-        </div>
-        <textarea id="sandbox-input" class="code-input" rows="5" spellcheck="false">${esc(state.sandboxInput)}</textarea>
-        <button class="primary-btn" id="run-sandbox-btn" style="margin-top: 0.8rem;">Run Code &rarr;</button>
-        <div class="console-out" id="sandbox-output">${esc(state.sandboxOutput || "> Console output will appear here...")}</div>
-      </div>
+    <div class="sandbox-card">
+      <h3>Interactive Console Sandbox</h3>
+      <textarea id="sandbox-input" class="code-input" rows="5">${esc(state.sandboxInput)}</textarea>
+      <button class="primary-btn" id="run-sandbox-btn" style="margin-top: 0.8rem;">Run Code &rarr;</button>
+      <div class="console-out">${esc(state.sandboxOutput || "> Console output will appear here...")}</div>
     </div>
   `;
-}
-
-function jumpToPractice(title) {
-  state.tab = "practice";
-  render();
-}
-
-function evaluatePythonSim(code) {
-  let logs = [];
-  const lines = code.split('\n');
-  let vars = {};
-
-  try {
-    lines.forEach(line => {
-      let trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) return;
-
-      if (trimmed.includes('str.maketrans(')) {
-        vars['table'] = true;
-      }
-
-      if (trimmed.startsWith('print(') && trimmed.endsWith(')')) {
-        let content = trimmed.slice(6, -1).trim();
-        if (content.includes('.translate(')) {
-          logs.push("h1334 w4rld");
-        } else if ((content.startsWith('"') && content.endsWith('"')) || (content.startsWith("'") && content.endsWith("'"))) {
-          logs.push(content.slice(1, -1));
-        } else {
-          logs.push("Output logged.");
-        }
-      }
-    });
-    return logs.length > 0 ? logs.join('\n') : "> Code executed cleanly.";
-  } catch (err) {
-    return `> Execution Error: ${err.message}`;
-  }
 }
 
 // Master Render Loop
@@ -955,69 +975,61 @@ function render() {
   renderTabs();
   const panel = document.getElementById("panel");
 
-  if (state.tab === "glossary") panel.innerHTML = renderGlossary();
-  else if (state.tab === "library") {
-    panel.innerHTML = renderLibrary();
-    panel.querySelectorAll(".filter-chip").forEach(btn => {
-      btn.addEventListener("click", () => {
-        state.filter = btn.dataset.cat;
+  if (state.tab === "lookup") {
+    panel.innerHTML = renderLookup();
+    const searchInput = document.getElementById("command-search");
+    if (searchInput) {
+      searchInput.focus();
+      searchInput.addEventListener("input", (e) => {
+        state.lookupQuery = e.target.value;
+        const match = findCommand(state.lookupQuery);
+        // Live update result without re-rendering tabs
+        const existingCard = panel.querySelector(".lookup-result");
+        if (existingCard) {
+          if (match) {
+            existingCard.innerHTML = `
+              <div class="result-header">
+                <span class="result-cmd">${esc(match.cmd)}</span>
+                <span class="badge badge-amber">${esc(match.type)}</span>
+              </div>
+              <div class="detail-section">
+                <span class="detail-label">1. Definition</span>
+                <div class="detail-val">${esc(match.definition)}</div>
+              </div>
+              <div class="detail-section">
+                <span class="detail-label">2. Function (How it works)</span>
+                <div class="detail-val">${esc(match.function)}</div>
+              </div>
+              <div class="detail-section">
+                <span class="detail-label">3. Purpose (When to use it)</span>
+                <div class="detail-val">${esc(match.purpose)}</div>
+              </div>
+              <div class="detail-section" style="margin-top: 0.4rem;">
+                <span class="detail-label">Syntax Example</span>
+                <pre class="code">${esc(match.example)}</pre>
+              </div>
+            `;
+          } else {
+            existingCard.innerHTML = `
+              <p style="color: var(--muted); margin: 0; text-align: center;">No command found matching "<code>${esc(state.lookupQuery)}</code>". Try typing commands like <code>def</code>, <code>translate</code>, <code>append</code>, or <code>split</code>.</p>
+            `;
+          }
+        }
+      });
+    }
+
+    panel.querySelectorAll(".quick-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        state.lookupQuery = chip.dataset.cmd;
         render();
       });
     });
   } 
+  else if (state.tab === "glossary") panel.innerHTML = renderGlossary();
+  else if (state.tab === "library") panel.innerHTML = renderLibrary();
   else if (state.tab === "core5") panel.innerHTML = renderCoreFive();
-  else if (state.tab === "quiz") {
-    panel.innerHTML = renderQuiz();
-    panel.querySelectorAll("[data-subject]").forEach(btn => {
-      btn.addEventListener("click", () => { state.quizSubject = btn.dataset.subject; initQuiz(); render(); });
-    });
-    panel.querySelectorAll("[data-level]").forEach(btn => {
-      btn.addEventListener("click", () => { state.quizLevel = btn.dataset.level; initQuiz(); render(); });
-    });
-    panel.querySelectorAll(".option").forEach(btn => {
-      btn.addEventListener("click", () => {
-        if (state.quizSelected !== null) return;
-        const idx = parseInt(btn.dataset.idx, 10);
-        state.quizSelected = idx;
-        if (idx === state.activeQuestions[state.quizIndex].answer) state.quizScore++;
-        render();
-      });
-    });
-    const nextBtn = document.getElementById("next-q-btn");
-    if (nextBtn) nextBtn.addEventListener("click", () => {
-      if (state.quizIndex === state.activeQuestions.length - 1) state.quizDone = true;
-      else { state.quizIndex++; state.quizSelected = null; }
-      render();
-    });
-    const restartBtn = document.getElementById("restart-quiz-btn");
-    if (restartBtn) restartBtn.addEventListener("click", () => { initQuiz(); render(); });
-  }
-  else if (state.tab === "practice") {
-    panel.innerHTML = renderPractice();
-    panel.querySelectorAll("[data-drill]").forEach(btn => {
-      btn.addEventListener("click", () => { state.activeDrillIdx = parseInt(btn.dataset.drill, 10); render(); });
-    });
-    const checkBtn = document.getElementById("check-drill-btn");
-    if (checkBtn) checkBtn.addEventListener("click", () => {
-      const val = document.getElementById("drill-input").value;
-      const feedback = document.getElementById("drill-feedback");
-      if (PRACTICE_DRILLS[state.activeDrillIdx].validate(val)) {
-        feedback.className = "feedback success";
-        feedback.innerHTML = "✓ Correct! Syntax matches the expected solution.";
-      } else {
-        feedback.className = "feedback error";
-        feedback.innerHTML = "✗ Syntax check failed. Please double-check your code structure.";
-      }
-    });
-    const hintBtn = document.getElementById("hint-btn");
-    if (hintBtn) hintBtn.addEventListener("click", () => alert(`Hint:\n${PRACTICE_DRILLS[state.activeDrillIdx].hint}`));
-    const runBtn = document.getElementById("run-sandbox-btn");
-    if (runBtn) runBtn.addEventListener("click", () => {
-      state.sandboxInput = document.getElementById("sandbox-input").value;
-      state.sandboxOutput = evaluatePythonSim(state.sandboxInput);
-      render();
-    });
-  }
+  else if (state.tab === "quiz") panel.innerHTML = renderQuiz();
+  else if (state.tab === "practice") panel.innerHTML = renderPractice();
 }
 
 render();
